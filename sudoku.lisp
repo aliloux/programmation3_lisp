@@ -48,21 +48,24 @@
 
 
 ;;; MÉTHODES GÉNÉRALES ;;; 
-
-; Afficher la grille
 (defun afficher-grille (grille)
   (setq *rang* 1)
-  (format t "~%    A   B   C   D   E   F   G   H   I  ")
-  (format t "~%  ------------------------------------- ~%")
+  (format t "~%  | A   B   C | D   E   F | G   H   I  ")
+  (format t "~%***************************************~%")
   (loop for i below (car (array-dimensions grille)) do
-        (format t "~a " *rang*)
-        (setq *rang* (1+ *rang*))
-        (loop for j below (cadr (array-dimensions grille)) do
-          (if (not (zerop (aref grille i j)))
-            (progn (let ((cellule (aref grille i j)))
-            (format t "| ~a " cellule)))
-            (format t "|   ")))
-        (format t "| ~%  ------------------------------------- ~%")))
+       (format t "~a " *rang*)
+       (setq *rang* (1+ *rang*))
+       (loop for j below (cadr (array-dimensions grille)) do
+	    (if (not (zerop (aref grille i j)))
+		(progn (let ((cellule (aref grille i j)))
+			 (if (equal (mod j 3) 0)
+			     (format t "| ~a " cellule)
+			     (format t "  ~a " cellule))))))
+       (format t "|")
+       (if (equal (mod (1- *rang*) 3) 0)
+	   (format t "~%***************************************~%")
+	   (format t "~%"))))
+
 
 
 ; Demander un chiffre de l'utilisateur
